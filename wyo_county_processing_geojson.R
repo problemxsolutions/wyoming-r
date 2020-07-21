@@ -1,3 +1,8 @@
+# System: Linux 5.4.0-40-generic, Ubuntu 20.04
+# R: Version 3.6.3 (2020-02-29)
+# RStudio: Version 1.2.5033
+
+# For the full tutorial, please reference URL: 
 # https://problemxsolutions.com/data-visualization/spatial-visualizations-in-r-part-1/
 
 
