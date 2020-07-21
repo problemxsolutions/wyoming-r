@@ -10,6 +10,9 @@
 # These are the resources for Wyoming county shapefiles
 # URL: https://www.geospatialhub.org/datasets/b0e0a99ec14748eeae750949c7bbb2ec_0
 
+# *************************************
+# Preparation
+# *************************************
 library(tidyverse)
 library(rgdal)
 library(rgeos)
@@ -18,6 +21,9 @@ library(geosphere)
 
 wyoming <- maptools::readShapePoly(fn = "./wyo_county_shapefile/DOR_-_Counties.shp/")
  
+# *************************************
+# Data Exploration
+# *************************************
 slotNames(wyoming)
 # [1] "data"        "polygons"    "plotOrder"   "bbox"        "proj4string"
 
@@ -52,8 +58,9 @@ names(wyoming)
 # [1] "OBJECTID"   "Shape_Leng" "Shape_Area" "COUNTYNAME" "YEARCOLLEC" "TAXYEAR"    "TYPENAME"   "RuleID"
 
 
-
+# *************************************
 # Data Transformation
+# *************************************
 
 wyoming@data$id <- rownames(wyoming@data)
 
@@ -92,7 +99,7 @@ wy_plot <-
         axis.text  = element_text(color = 'black'), 
         axis.ticks.length  = unit(0, "cm"))
 
-# This will be to just put in the Ward Numbers on the map for simple reference
+# Calculate the centroid of each polygon, method1
 cog_df <- 
   wyoming.df %>% 
   group_by(id, COUNTYNAME) %>% 
@@ -129,6 +136,7 @@ sample_cog1 <-
   summarise(long = mean(c(max(long),min(long))), 
             lat = mean(c(max(lat),min(lat))))
 
+# Using information already available in the object structure
 sample_cog2 <-
   wyoming@polygons[[11]]@labpt %>% 
   t() %>%  
@@ -137,6 +145,7 @@ sample_cog2 <-
   rename('long'='V1', 'lat'='V2') %>% 
   select(3,4,1,2)
 
+# Using the gCentroid function to calculate the centroid of the polygon
 sample_cog3 <-
   wyoming%>%
   gCentroid(.,byid=TRUE) %>% 
@@ -153,6 +162,7 @@ sample_cog_df <- bind_rows(sample_cog0,
 
 sample_cog_df$Method <- row.names(sample_cog_df)
 
+# Plot ot check out where the polygon centers are based on the method used
 sample_plot <- 
 ggplot(data = sample_county, 
        aes(x = long, y = lat, group = COUNTYNAME, fill =COUNTYNAME)) +
@@ -187,8 +197,9 @@ county_labpt %>%
   write_csv(., path = "./ProblemXSolutions.com/Wyoming/wyo_cog.csv")
 
 
-# wyoming_plot <- 
-
+# *************************************
+# Data Visualization
+# *************************************
 wy_plot +
   guides(fill=FALSE) +
   annotate("text", 

@@ -4,7 +4,7 @@
 
 # For the full tutorial, please reference URL: 
 # https://problemxsolutions.com/data-visualization/spatial-visualizations-in-r-part-1/
-
+# https://problemxsolutions.com/data-visualization/working-with-geojson-in-r/
 
 # https://www.geospatialhub.org/pages/applications
 # These are the resources for Wyoming county shapefiles
@@ -77,8 +77,10 @@ wyoming$features[[1]]$geometry$coordinates
 # [4,] -107.5426 42.74643
 # [5,] -107.5425 42.74274
 
-# The structure of teh `wyoming$features[[1]]$properties` gives us the information that we saw in the shapefiles spatial dataframe
-# To create the same table, we could `bind_rows` using an `sapply` function to loop through each of the list elements in the `wyoming` object.
+# The structure of teh `wyoming$features[[1]]$properties` gives us the 
+# information that we saw in the shapefiles spatial dataframe
+# To create the same table, we could `bind_rows` using an `sapply` 
+# function to loop through each of the list elements in the `wyoming` object.
 str(wyoming$features[[1]]$properties)
 # List of 8
 # $ COUNTYNAME  : chr "Natrona"
